@@ -5,6 +5,7 @@
         "wwwroot",
         "**/*.cshtml",
         "appsettings.json",
+        "Views",
         "web.config"
       ],
       "exclude": [
@@ -22,6 +23,7 @@
       "wwwroot",
       "**/*.cshtml",
       "appsettings.json",
+      "Views",
       "web.config"
     ],
     "exclude": [
@@ -31,9 +33,10 @@
   },
 
   "dependencies": {
+    "Microsoft.AspNetCore.Mvc": "1.0.1",
+    "IBM.EntityFrameworkCore-lnx": "1.0.0.100",
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.2",
     "Microsoft.AspNetCore.Routing": "1.0.2",
-    "Microsoft.AspNetCore.Mvc": "1.0.2",
     "Microsoft.AspNetCore.Razor.Tools": {
       "version": "1.0.0-preview4-final",
       "type": "build"

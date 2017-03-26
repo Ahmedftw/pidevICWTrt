@@ -6,3 +6,4 @@ applications:
   name: pidevICWTrt
   host: pidevICWTrt
   disk_quota: 1024M
+  env: LD_LIBRARY_PATH: $HOME/.nuget/packages/IBM.Data.DB2.Core-lnx/1.0.0.100/build/clidriver/lib

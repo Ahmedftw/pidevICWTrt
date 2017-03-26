@@ -1,51 +1,40 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using WebApplication.Models;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using IBM.EntityFrameworkCore;
 
 public class Startup
 {
-    public IConfigurationRoot Configuration { get; }
-
-    public Startup(IHostingEnvironment env)
+    public void Configure(IApplicationBuilder app)
     {
-        var builder = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-            .AddEnvironmentVariables();
-
-        Configuration = builder.Build();
-    }
-
-    public void ConfigureServices(IServiceCollection services)
-    {
-        // Add framework services.
-        services.AddMvc();
-    }
-
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-    {
-        loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-        loggerFactory.AddDebug();
-
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-            app.UseBrowserLink();
-        }
-        else
-        {
-            app.UseExceptionHandler("/Home/Error");
-        }
-
+        app.UseDefaultFiles();
         app.UseStaticFiles();
-
         app.UseMvc(routes =>
         {
             routes.MapRoute(
                 name: "default",
-                template: "{controller=Home}/{action=Index}/{id?}");
+                template: "{controller=Blogs}/{action=Index}/{id?}");
         });
+    }
+    public void ConfigureServices(IServiceCollection services)
+    {
+        var connection = "DATABASE=dbname;SERVER=hostname:sslport;UID=username;PWD=password; Security = SSL; ";
+         services.AddDbContext<BloggingContext>(options => options.UseDb2(connection));
+        services.AddMvc();
+    }
+    public static void Main(string[] args)
+    {
+        var config = new ConfigurationBuilder()
+                         .AddCommandLine(args)
+                         .Build();
+
+        var host = new WebHostBuilder()
+                       .UseKestrel()
+                       .UseConfiguration(config)
+                       //.UseStartup()
+                       .Build();
+        host.Run();
     }
 }
